@@ -17,9 +17,8 @@ intents = discord.Intents.default()
 intents.message_content = True
 intents.members = True
 
-# Префиксы: работают и /бан, и .ban
-# Если хочешь только "/", сделай PREFIXES = ['/']
-PREFIXES = ['.', '/']
+# Префикс только точка: .бан .кик .мьют
+PREFIXES = ['.']
 
 bot = commands.Bot(
     command_prefix=commands.when_mentioned_or(*PREFIXES),
@@ -30,7 +29,7 @@ bot = commands.Bot(
 WELCOME_CHANNEL_ID = 1536083742702043216
 DEFAULT_ROLE_ID = 1536078371556032609
 
-# Роли, которым разрешены /бан /мьют /кик
+# Роли, которым разрешены .бан .мьют .кик
 STAFF_ROLE_IDS = {
     1536078371593781332,
     1536078371593781338,
@@ -612,11 +611,11 @@ async def help_command(ctx):
     embed.add_field(
         name='модерация',
         value=(
-            '`/бан @участник 5мин причина`\n'
-            '`/бан @участник навсегда причина`\n'
-            '`/кик @участник причина`\n'
-            '`/мьют @участник 10мин причина`\n'
-            '`/мьют @участник снять`'
+            '`.бан @участник 5мин причина`\n'
+            '`.бан @участник навсегда причина`\n'
+            '`.кик @участник причина`\n'
+            '`.мьют @участник 10мин причина`\n'
+            '`.мьют @участник снять`'
         ),
         inline=False
     )
@@ -791,7 +790,7 @@ async def on_message(message: discord.Message):
         return
 
     is_command = (
-        message.content.startswith(('.', '/'))
+        message.content.startswith('.')
         or message.content.startswith(f'<@{bot.user.id}>')
         or message.content.startswith(f'<@!{bot.user.id}>')
     )
@@ -832,7 +831,7 @@ async def on_command_error(ctx, error):
     if isinstance(error, commands.MissingRequiredArgument):
         await ctx.send(
             'похоже, ты не указал(а) все аргументы.\n'
-            'пример: `/бан @участник 5мин причина`'
+            'пример: `.бан @участник 5мин причина`'
         )
         return
 
